@@ -1,0 +1,340 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.5cm}
+
+
+\title{\Large \textbf{TD Analyse}}
+\author{Thomas Goossaert-Cosyn}
+
+\newtheorem{exercise}{Exercice}
+
+% Alignement des puces à gauche et espacement réduit
+\setlist[itemize]{leftmargin=*, itemsep=0.3em}
+
+
+
+\begin{document}
+	\maketitle
+	
+	\setcounter{section}{4}
+	\section{Intégration}
+	
+	\setcounter{exercise}{3}
+	\begin{exercise}
+		On travaille avec la mesure de Lebesgue sur $\mathbb{R}$ et on se donne une fonction continue par morceaux (par exemple) sur $\mathbb{R}$.
+		
+		\textbf{(1)} Montrer que si $f$ est positive, on a, lorsque $R \to +\infty$,
+		\[
+		\int_{-R}^{R} f \longrightarrow \int_{\mathbb{R}} f .
+		\]
+		
+		\textbf{(2)} Montrer que si $f$ est intégrable, on a, lorsque $R \to +\infty$,
+		\[
+		\int_{-R}^{R} f \longrightarrow \int_{\mathbb{R}} f .
+		\]
+		
+		\textbf{(3)} On suppose $f$ intégrable sur $\mathbb{R}$. Montrer que pour tout $\varepsilon > 0$, on peut trouver $g$ intégrable, bornée et à support compact telle que
+		\[
+		\int_{\mathbb{R}} |f-g| \le \varepsilon .
+		\]
+	\end{exercise}
+		
+		\begin{proof}
+			\textbf{(1)}
+			Supposons $f$ mesurable positive. Pour $R>0$, posons
+			\[
+			f_R = f \mathbf{1}_{[-R,R]}.
+			\]
+			Alors $(f_R)_{R>0}$ est une famille croissante de fonctions mesurables positives et
+			\[
+			f_R(x) \uparrow f(x) \quad \text{pour tout } x \in \mathbb{R}.
+			\]
+			Par le théorème de convergence monotone,
+			\[
+			\lim_{R \to +\infty} \int_{\mathbb{R}} f_R
+			=
+			\int_{\mathbb{R}} \lim_{R\to+\infty} f_R
+			=
+			\int_{\mathbb{R}} f.
+			\]
+			Or
+			\[
+			\int_{\mathbb{R}} f_R
+			=
+			\int_{-R}^{R} f.
+			\]
+			On en déduit
+			\[
+			\int_{-R}^{R} f \longrightarrow \int_{\mathbb{R}} f.
+			\]
+			
+			\textbf{(2)} S	upposons maintenant $f \in L^1(\mathbb{R})$. Alors $|f|$ est intégrable. On applique le résultat précédent à la fonction positive $|f|$ :
+			\[
+			\int_{-R}^{R} |f| \longrightarrow \int_{\mathbb{R}} |f|.
+			\]
+			On écrit
+			\[
+			\int_{\mathbb{R}} f - \int_{-R}^{R} f
+			=
+			\int_{|x|>R} f(x)\,dx.
+			\]
+			Donc
+			\[
+			\left| \int_{\mathbb{R}} f - \int_{-R}^{R} f \right|
+			\le
+			\int_{|x|>R} |f|.
+			\]
+			Or
+			\[
+			\int_{|x|>R} |f|
+			=
+			\int_{\mathbb{R}} |f| - \int_{-R}^{R} |f|
+			\longrightarrow 0.
+			\]
+			Ainsi
+			\[
+			\int_{-R}^{R} f \longrightarrow \int_{\mathbb{R}} f.
+			\]
+			
+			\textbf{(3)} Soit $f \in L^1(\mathbb{R})$ et $\varepsilon > 0$.
+			
+			
+			\textbf{Étape 1 : troncature du support.}
+			
+			D'après le point (2), il existe $R>0$ tel que
+			\[
+			\int_{|x|>R} |f(x)|\,dx < \frac{\varepsilon}{2}.
+			\]
+			Posons
+			\[
+			f_1 = f \mathbf{1}_{[-R,R]}.
+			\]
+			Alors
+			\[
+			\int_{\mathbb{R}} |f-f_1|
+			=
+			\int_{|x|>R} |f|
+			<
+			\frac{\varepsilon}{2}.
+			\]
+			
+			
+			\textbf{Étape 2 : troncature des valeurs.}
+			
+			Pour $M>0$, posons
+			\[
+			f_{1,M}(x) =
+			\begin{cases}
+				f_1(x) & \text{si } |f_1(x)| \le M, \\
+				M\,\mathrm{sgn}(f_1(x)) & \text{sinon}.
+			\end{cases}
+			\]
+			Alors $f_{1,M}$ est bornée par $M$ et a toujours son support dans $[-R,R]$.
+			
+			Comme $f_1 \in L^1$, on a
+			\[
+			\int_{\{|f_1|>M\}} |f_1| \longrightarrow 0
+			\quad \text{lorsque } M \to +\infty.
+			\]
+			Donc il existe $M>0$ tel que
+			\[
+			\int_{\{|f_1|>M\}} |f_1|
+			<
+			\frac{\varepsilon}{2}.
+			\]
+			Or
+			\[
+			|f_1 - f_{1,M}|
+			\le
+			|f_1| \mathbf{1}_{\{|f_1|>M\}},
+			\]
+			donc
+			\[
+			\int_{\mathbb{R}} |f_1 - f_{1,M}|
+			<
+			\frac{\varepsilon}{2}.
+			\]
+			
+			\medskip
+			
+			\textbf{Conclusion.}
+			
+			Posons $g = f_{1,M}$. Alors $g$ est intégrable, bornée, à support compact et
+			\[
+			\int_{\mathbb{R}} |f-g|
+			\le
+			\int_{\mathbb{R}} |f-f_1|
+			+
+			\int_{\mathbb{R}} |f_1-g|
+			<
+			\frac{\varepsilon}{2}
+			+
+			\frac{\varepsilon}{2}
+			=
+			\varepsilon.
+			\]
+			
+			\bigskip
+			
+			Ceci achève la démonstration.
+		\end{proof}
+	
+	\setcounter{section}{9}
+	\section{Equations différentielles}
+	\setcounter{exercise}{2}
+	\begin{exercise}
+		Résoudre le problème différentiel suivant sur $\mathbb{R}$\\
+		\[2x²y'=1-y²\]
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{itemize}
+			\item On travaille sur $I\subset \mathbb{R}$. Posons $f(x,y)=\frac{1-y²}{2x²}$. $f$ est :\\
+			\begin{itemize}
+				\item continue sur $I\times \mathbb{R}$
+				\item $\mathcal{C}¹$ en $y$ donc localement lipschitzienne en $y$
+			\end{itemize}
+			Par le théorème de Cauchy Lipschitz, pour tout $(x_0,y_0)$, il existe une unique solution définie sur $I$.
+		\end{itemize}
+	\end{proof}
+	
+	\setcounter{exercise}{5}
+	\begin{exercise}
+		\textbf{Exercice 6.} Soit une fonction continue $A : \mathbb{R} \to M_n(\mathbb{R})$. On note $(y_1,\dots,y_n)$ une base de solutions de l’équation différentielle
+		\[
+		y'(t)=A(t)y(t), \qquad t\in\mathbb{R}.
+		\]
+		On notera aussi $M(t)$ la matrice $(y_1(t),\dots,y_n(t))$ dans la base canonique de $\mathbb{R}^n$.
+		\begin{enumerate}
+			\item Calculer le wronskien $W(t)=\det M(t)$, pour tout $t\in\mathbb{R}$.
+			\item On suppose maintenant que $\|A(\cdot)\|$ est intégrable sur $\mathbb{R}_+$.
+			\begin{enumerate}
+				\item Montrer que toute solution $y$ admet une limite en $+\infty$.
+				\item Soit $\theta$ l’application qui à $y_0\in\mathbb{R}^n$ associe la limite en $+\infty$ de la solution $y$ telle que $y(0)=y_0$. Montrer que $\theta$ est un isomorphisme de $\mathbb{R}^n$ sur $\mathbb{R}^n$.
+			\end{enumerate}
+		\end{enumerate}
+		\end{exercise}
+		
+		\begin{proof}
+		
+		
+		1. La matrice fondamentale $M(t)$ vérifie
+		\[
+		M'(t)=A(t)M(t).
+		\]
+		On pose $W(t)=\det M(t)$. Par la formule de dérivation du déterminant,
+		\[
+		W'(t)=\operatorname{tr}(A(t))\,W(t).
+		\]
+		On obtient donc une équation différentielle scalaire :
+		\[
+		W'(t)=\operatorname{tr}(A(t))\,W(t).
+		\]
+		En intégrant,
+		\[
+		W(t)=W(0)\exp\!\left(\int_0^t \operatorname{tr}(A(s))\,ds\right).
+		\]
+		En particulier, si $(y_1,\dots,y_n)$ est une base de solutions, alors $W(0)\neq 0$, donc
+		\[
+		W(t)\neq 0 \quad \text{pour tout } t\in\mathbb{R}.
+		\]
+		
+		2.a) Soit $y$ une solution. Elle vérifie
+		\[
+		y(t)=y(0)+\int_0^t A(s)y(s)\,ds.
+		\]
+		Pour $t\ge s\ge 0$,
+		\[
+		y(t)-y(s)=\int_s^t A(\tau)y(\tau)\,d\tau.
+		\]
+		On en déduit
+		\[
+		\|y(t)-y(s)\|
+		\le
+		\int_s^t \|A(\tau)\|\,\|y(\tau)\|\,d\tau.
+		\]
+		Par ailleurs on a également,
+		\[\|y(t)\|\leq \|y(0)\| + \int_{0}^{t}\|A(s)y(s)\|ds\]
+		Donc en appliquant le lemme de Gronwall pour $\|A(\cdot)\|$ positive et $\|y(\cdot)\|$ continue, pour $t\ge 0$,
+		\[
+		\|y(t)\|
+		\le
+		\|y(0)\|\exp\!\left(\int_0^t \|A(\sigma)\|\,d\sigma\right).
+		\]
+		Comme $\|A(\cdot)\|$ est intégrable sur $\mathbb{R}_+$, la quantité
+		\[
+		C=\exp\!\left(\int_0^{+\infty} \|A(\sigma)\|\,d\sigma\right)
+		\]
+		est finie, et donc
+		\[
+		\|y(t)\|\le C\|y(0)\| \quad \text{pour tout } t\ge 0.
+		\]
+		Ainsi $y$ est bornée sur $\mathbb{R}_+$.
+		
+		Dès lors,
+		\[
+		\|y(t)-y(s)\|
+		\le
+		C\|y(0)\|\int_s^t \|A(\tau)\|\,d\tau.
+		\]
+		Comme $\|A\|$ est intégrable sur $\mathbb{R}_+$, le membre de droite tend vers $0$ lorsque $s,t\to+\infty$.  
+		
+		Donc $y(t)$ est de Cauchy lorsque $t\to+\infty$, et comme $\mathbb{R}^n$ est complet, $y(t)$ admet une limite lorsque $t\to+\infty$.\\
+		
+		2.b) On définit
+		\[
+		\theta : \mathbb{R}^n \to \mathbb{R}^n,
+		\qquad
+		\theta(y_0)=\lim_{t\to+\infty} y(t),
+		\]
+		où $y$ est l’unique solution telle que $y(0)=y_0$.
+		
+		D'après la question précédente, $\theta$ est bien définie. Elle est linéaire car l’équation différentielle est linéaire.
+		
+		Montrons qu’elle est injective.  
+		
+		Si $\theta(y_0)=0$, alors $y(t)\to 0$ lorsque $t\to+\infty$.  
+		On écrit, pour $t\ge 0$,
+		\[
+		y(t)=y(T)-\int_t^T A(s)y(s)\,ds.
+		\]
+		En faisant tendre $T\to+\infty$ et en utilisant que $y(T)\to 0$, on obtient
+		\[
+		y(t)=-\int_t^{+\infty} A(s)y(s)\,ds.
+		\]
+		On en déduit
+		\[
+		\|y(t)\|
+		\le
+		\int_t^{+\infty} \|A(s)\|\,\|y(s)\|\,ds.
+		\]
+		En posant
+		\[
+		m(t)=\sup_{u\ge t}\|y(u)\|,
+		\]
+		qui est bien défini car $\|y(\cdot)\|$ est continue et $y(t)\rightarrow 0$ en $+\infty$, on obtient
+		\[
+		m(t)\le m(t)\int_t^{+\infty}\|A(s)\|\,ds.
+		\]
+		Et comme $\|A(\cdot)\|$ est intégrable, on a pour $t$ assez grand,
+		\[
+		\int_t^{+\infty}\|A(s)\|\,ds<1,
+		\]
+		donc nécessairement $m(t)=0$. Ainsi $y(t)=0$ pour $t$ assez grand, puis par unicité des solutions, $y\equiv 0$. Donc $y_0=0$.
+		
+		Ainsi $\theta$ est injective.  
+		
+		Comme $\theta$ est linéaire entre deux espaces vectoriels de même dimension finie $n$, elle est bijective.  
+		
+		Donc $\theta$ est un isomorphisme de $\mathbb{R}^n$ sur $\mathbb{R}^n$.
+		
+	
+	\end{proof}
+	
+	
+\end{document}
