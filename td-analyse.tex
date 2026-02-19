@@ -21,7 +21,70 @@
 \begin{document}
 	\maketitle
 	
-	\setcounter{section}{4}
+	\setcounter{section}{1}
+	\section{Fonctions d'une variable réelle}
+	
+	\setcounter{exercise}{23}
+	\begin{exercise}
+		Soit $f$ une fonction réelle définie sur un intervalle ouvert $I$. On suppose que pour tout $x \in I$ on a
+		\[
+		\liminf_{h \to 0^+} \frac{f(x+h) + f(x-h) - 2f(x)}{2h} > 0.
+		\]
+		Montrer que $f$ est convexe sur $I$.
+		
+		Le résultat reste vrai si on suppose seulement que la $\liminf$ est $\geq 0$. Voyez-vous comment faire ?
+	\end{exercise}
+	
+	\begin{proof}
+		Posons les fonctions pentes
+		\[s_+(x,h)=\frac{f(x+h)-f(x)}{h}, s_-(x,h)=\frac{f(x)-f(x-h)}{h}\]
+		L'hypothèse de l'énoncé se réécrit alors
+		\[\forall x\in I, \liminf_{h\rightarrow 0^{+}} s_+(x,h)-s_-(x,h) > 0\]
+		Pour passer de cette propriété locale à une inégalité globale, considérons $[a,c]\subset I$ et $[x_0=a,...,x_n=c]$ une subdivision de pas $\Delta=\frac{c-a}{n}$.\\
+		On définit la suite de pentes locales par :
+		\[s_k=\frac{f(x_{k+1})-f(x_k)}{\Delta}\]
+		L'hypothèse donne don que $s_0<s_1<...<s_{n-1}$\\
+		Soit $b\in [a,c]$, $n$ suffisamment grand et $k$ tel que $x_k\leq b<x_{k+1}$, alors la croissance des pentes entraine
+		\[\frac{f(b)-f(a)}{b-a}\leq s_k<\frac{f(c)-f(b)}{c-b}\]
+		D'où la convexité de $f$.
+	\end{proof}
+	
+	\setcounter{section}{3}
+	\section{Topologie}
+	
+	\setcounter{exercise}{2}
+	\begin{exercise}
+		Soit $K, L$ deux espaces métriques compact et $\pi : K \rightarrow L$ une bijection continue.\\
+		Montrer que $\pi$ est un homéomorphisme entre $K$ et $L$
+	\end{exercise}
+	\begin{proof}
+		Pour prouver que $\pi$ est un homéomorphisme, il suffit de montrer que sa réciproque $\pi^{-1} : L \rightarrow K$ est continue.\\
+		
+		Soit $(y_n)_{n \in \mathbb{N}}$ une suite d'éléments de $L$ convergeant vers un élément $y \in L$. Posons :
+		\[ x_n = \pi^{-1}(y_n) \quad \text{et} \quad x = \pi^{-1}(y) \]
+		Montrons que la suite $(x_n)$ converge vers $x$ dans $K$.
+		
+		La suite $(x_n)$ est une suite d'éléments de l'espace métrique compact $K$. 
+		Par Bolzano-Weierstrass, de toute suite d'un compact, on peut extraire une sous-suite convergente. Soit $(x_{\phi(n)})$ une telle sous-suite, et notons $z \in K$ sa limite :
+		\[ x_{\phi(n)} \xrightarrow[n \to \infty]{} z \]
+		
+		L'application $\pi$ est continue sur $K$. Par caractérisation séquentielle de la continuité, l'image de la sous-suite doit converger vers l'image de sa limite :
+		\[ \pi(x_{\phi(n)}) \xrightarrow[n \to \infty]{} \pi(z) \]
+		Or, par construction, $\pi(x_{\phi(n)}) = y_{\phi(n)}$. 
+		
+		Comme la suite parente $(y_n)$ converge vers $y$, toute sous-suite extraite converge également vers $y$. On a donc, par unicité de la limite dans $L$ :
+		\[ \pi(z) = y \]
+		Puisque $\pi$ est une bijection, chaque élément possède un unique antécédent. Sachant que $\pi(x) = y$, l'injectivité de $\pi$ impose :
+		\[ z = x \]
+		
+		Nous avons montré que toute sous-suite convergente de $(x_n)$ converge nécessairement vers $x$. Dans un espace compact, si une suite possède une unique valeur d'adhérence, alors elle converge vers cette valeur.
+		
+		Ainsi, $x_n \xrightarrow[n \to \infty]{} x$, ce qui prouve que $\pi^{-1}$ est continue en tout point $y \in L$. 
+		
+		Conclusion : $\pi$ est une bijection continue dont la réciproque est continue, c'est donc un homéomorphisme.
+	\end{proof}
+	
+
 	\section{Intégration}
 	
 	\setcounter{exercise}{3}
@@ -73,7 +136,7 @@
 			\int_{-R}^{R} f \longrightarrow \int_{\mathbb{R}} f.
 			\]
 			
-			\textbf{(2)} S	upposons maintenant $f \in L^1(\mathbb{R})$. Alors $|f|$ est intégrable. On applique le résultat précédent à la fonction positive $|f|$ :
+			\textbf{(2)} Supposons maintenant $f \in L^1(\mathbb{R})$. Alors $|f|$ est intégrable. On applique le résultat précédent à la fonction positive $|f|$ :
 			\[
 			\int_{-R}^{R} |f| \longrightarrow \int_{\mathbb{R}} |f|.
 			\]
@@ -183,6 +246,65 @@
 			
 			Ceci achève la démonstration.
 		\end{proof}
+	
+	\setcounter{section}{7}
+	\section{Transformée de Fourier}
+	
+	\setcounter{exercise}{4}
+	\begin{exercise}
+		On travaille dans l'espace de Hilbert $H = L^2(\mathbb{R}, \mu)$ associé à la mesure (gaussienne standard) de probabilité $\mu$ sur $\mathbb{R}$ définie par $d\mu(x) = \frac{e^{-x^2/2}}{\sqrt{2\pi}}dx$. Pour $n \in \mathbb{N}$ et $x \in \mathbb{R}$, on note :
+		\[ h_n(x) = e^{x^2/2}g^{(n)}(x), \quad \text{où} \quad g(x) = e^{-x^2/2}. \]
+		
+		\begin{enumerate}
+			\item Montrer que les fonctions $h_n$ sont polynomiales. Déterminer leurs degrés et coefficients dominants.
+			\item Montrer que $(h_n)_{n\in\mathbb{N}}$ forme une famille orthogonale de $H$ et calculer la norme $\lambda_n$ de chaque élément $h_n$.
+			\item On veut montrer que la famille $(\lambda_n^{-1}h_n)_{n\in\mathbb{N}}$ est une base hilbertienne de $H$.
+			\begin{enumerate}
+				\item Expliquer pourquoi il suffit de montrer que les polynômes sont denses dans $H$.
+				\item Pour $f \in H$ et $x \in \mathbb{R}$, on note $\psi_f(x) = f(x)e^{-x^2/2}$. Montrer que sa transformée de Fourier $\widehat{\psi_f}$ est bien définie sur $\mathbb{R}$ et qu'elle s'étend en une fonction holomorphe sur $\mathbb{C}$.
+				\item Pour tout $n \in \mathbb{N}$, calculer la dérivée $n$-ième $\widehat{\psi_f}^{(n)}(0)$. En déduire que si $f$ est orthogonale à tous les polynômes, alors $f$ est nulle.
+				\item Conclure.
+			\end{enumerate}
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		1. Par récurrence, montrons que $g^{(n)}(x) = P_n(x)e^{-x^2/2}$ où $P_n$ est un polynôme de degré $n$ et de coefficient dominant $(-1)^n$.
+		\begin{itemize}
+			\item Pour $n=0$, $g^{(0)}(x) = e^{-x^2/2}$, donc $P_0(x)=1$. La propriété est vraie.
+			\item Supposons $g^{(n)}(x) = P_n(x)e^{-x^2/2}$. Alors :
+			\[ g^{(n+1)}(x) = \frac{d}{dx}(P_n(x)e^{-x^2/2}) = (P_n'(x) - x P_n(x))e^{-x^2/2} \]
+			Ainsi $P_{n+1}(x) = P_n'(x) - x P_n(x)$. Si $P_n$ est de degré $n$ et de coefficient dominant $a_n$, alors $-xP_n$ est de degré $n+1$ et de coefficient dominant $-a_n$. Le terme $P_n'$ est de degré $n-1$, il ne modifie pas le degré dominant.
+		\end{itemize}
+		Par construction, $h_n(x) = e^{x^2/2} (P_n(x)e^{-x^2/2}) = P_n(x)$. 
+		\textbf{Conclusion :} $h_n$ est un polynôme de \textbf{degré $n$} et de \textbf{coefficient dominant $(-1)^n$}.\\
+		
+		2. Soient $m, n \in \mathbb{N}$ avec $m < n$. Le produit scalaire dans $H$ est :
+		\[ \langle h_n, h_m \rangle_\mu = \int_{\mathbb{R}} h_n(x) h_m(x) \frac{e^{-x^2/2}}{\sqrt{2\pi}} dx = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} \left( e^{x^2/2} g^{(n)}(x) \right) h_m(x) e^{-x^2/2} dx = \frac{1}{\sqrt{2\pi}} \int_{\mathbb{R}} g^{(n)}(x) h_m(x) dx \]
+		Par intégrations par parties successives ($n$ fois), les termes de bord s'annulent car les dérivées de la gaussienne tendent vers $0$ :
+		\[ \langle h_n, h_m \rangle_\mu = \frac{(-1)^n}{\sqrt{2\pi}} \int_{\mathbb{R}} g(x) h_m^{(n)}(x) dx \]
+		Comme $\deg(h_m) = m < n$, on a $h_m^{(n)}(x) = 0$, donc $\langle h_n, h_m \rangle_\mu = 0$. La famille est orthogonale.
+		
+		Pour la norme $\lambda_n^2 = \langle h_n, h_n \rangle_\mu$ :
+		\[ \lambda_n^2 = \frac{(-1)^n}{\sqrt{2\pi}} \int_{\mathbb{R}} g(x) h_n^{(n)}(x) dx \]
+		Or $h_n(x) = (-1)^n x^n + \dots$, donc $h_n^{(n)}(x) = (-1)^n n!$. D'où :
+		\[ \lambda_n^2 = \frac{(-1)^n (-1)^n n!}{\sqrt{2\pi}} \int_{\mathbb{R}} e^{-x^2/2} dx = \frac{n!}{\sqrt{2\pi}} \times \sqrt{2\pi} = n! \]
+		\textbf{Conclusion :} $\lambda_n = \sqrt{n!}$.\\
+		
+		3.a) Puisque $\deg(h_n) = n$, toute combinaison linéaire des $h_k$ ($k \le n$) décrit l'espace des polynômes de degré au plus $n$. Si les polynômes sont denses dans $H$, alors l'adhérence de $\text{Vect}(h_n)_{n\in\mathbb{N}}$ est $H$. Comme la famille est orthonormale (après division par $\lambda_n$), c'est une base hilbertienne.\\
+		
+		3.b) $f \in H$ signifie $\int |f|^2 d\mu < \infty$. $\psi_f(x) = f(x)e^{-x^2/2}$.\\
+		Par Cauchy-Schwarz, sa transformée de Fourier $\widehat{\psi_f}(\xi) = \int f(x) e^{-x^2/2} e^{-ix\xi} dx$ est bien définie car $\psi_f \in L^1(\mathbb{R})$ :
+		\[ \int |f(x)| e^{-x^2/2} dx = \sqrt{2\pi} \int |f(x)| e^{-x^2/4} \frac{e^{-x^2/4}}{\sqrt{2\pi}} dx \le \sqrt{2\pi} \|f\|_H \|e^{-x^2/4}\|_H < \infty \]
+		L'extension holomorphe $F(z) = \int f(x) e^{-x^2/2} e^{-ixz} dx$ pour $z \in \mathbb{C}$ est justifiée par le fait que pour $z = u+iv$, $|e^{-ixz}| = e^{xv}$. Le terme $e^{-x^2/2}$ assure la convergence et la domination pour tout $z \in \mathbb{C}$ (croissance exponentielle vs décroissance gaussienne).\\
+		
+		3.c) On a 
+		\[\widehat{\psi_f}^{(n)}(0) = \int f(x) e^{-x^2/2} (-ix)^n dx = (-i)^n \sqrt{2\pi} \int f(x) x^n \frac{e^{-x^2/2}}{\sqrt{2\pi}} dx = (-i)^n \sqrt{2\pi} \langle f, x^n \rangle_\mu\]
+		Si $f$ est orthogonale à tous les polynômes, alors $\langle f, x^n \rangle_\mu = 0$ pour tout $n$, donc $\widehat{\psi_f}^{(n)}(0) = 0$.
+		Comme $\widehat{\psi_f}$ est une fonction analytique (holomorphe sur $\mathbb{C}$), ses coefficients de Taylor en 0 sont tous nuls, donc $\widehat{\psi_f} \equiv 0$. Par injectivité de la transformée de Fourier, $\psi_f = 0$ p.p., donc $f = 0$ p.p.\\
+		
+		3.d) L'orthogonal de l'espace des polynômes est $\{0\}$, donc les polynômes sont denses dans $H$. La famille $(\lambda_n^{-1} h_n)$ est donc une base hilbertienne.
+	\end{proof}
 	
 	\setcounter{section}{9}
 	\section{Equations différentielles}
