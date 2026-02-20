@@ -5,16 +5,30 @@
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{enumitem}
 \usepackage{geometry}
+\usepackage{graphicx}
 \geometry{a4paper, margin=1.5cm}
 
 
 \title{\Large \textbf{TD Analyse}}
 \author{Thomas Goossaert-Cosyn}
 
+\newtheoremstyle{exercisestyle}
+{}                % Espace avant
+{}                % Espace après
+{\normalfont}  % Police du titre (gras)
+{}                % Indentation
+{\bfseries}       % Police du titre de l'énoncé (gras)
+{.}               % Ponctuation après le titre
+{ }               % Espace après le titre
+{}                % Style du corps (par défaut)
+\theoremstyle{exercisestyle}
 \newtheorem{exercise}{Exercice}
 
 % Alignement des puces à gauche et espacement réduit
 \setlist[itemize]{leftmargin=*, itemsep=0.3em}
+
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
 
 
 
@@ -247,11 +261,58 @@
 			Ceci achève la démonstration.
 		\end{proof}
 	
-	\setcounter{section}{7}
+	\setcounter{section}{6}
+	\section{Séries de Fourier}
+	
+	\setcounter{exercise}{5}
+	\begin{exercise}{(Critère d'équirépartition)}
+		On se donne une suite $(x_n)$ de réels telle que
+		\[ \forall k \in \mathbb{Z} \setminus \{0\}, \qquad \lim_{N \to +\infty} \frac{1}{N} \sum_{n=1}^N e^{ikx_n} = 0. \]
+		Montrer que pour toute fonction $f$ continue $2\pi$-périodique on a
+		\[ \lim_{N \to +\infty} \frac{1}{N} \sum_{n=1}^N f(x_n) = \frac{1}{2\pi} \int_0^{2\pi} f(t) dt. \]
+	\end{exercise}
+	
+	\begin{proof}
+		Étape 1 : Cas des polynômes trigonométriques \\
+		Soit $P$ un polynôme trigonométrique. Par définition, il existe un entier $M \geq 0$ et des coefficients complexes $(c_k)_{-M \leq k \leq M}$ tels que pour tout $x \in \mathbb{R}$,
+		\[ P(x) = \sum_{k=-M}^M c_k e^{ikx}. \]
+		Calculons la moyenne de $P$ sur les $N$ premiers termes de la suite $(x_n)$ :
+		\[ \frac{1}{N} \sum_{n=1}^N P(x_n) = \frac{1}{N} \sum_{n=1}^N \sum_{k=-M}^M c_k e^{ikx_n} = \sum_{k=-M}^M c_k \left( \frac{1}{N} \sum_{n=1}^N e^{ikx_n} \right). \]
+		Par hypothèse, pour tout $k \neq 0$, on a $\lim_{N \to +\infty} \frac{1}{N} \sum_{n=1}^N e^{ikx_n} = 0$. 
+		Pour $k = 0$, la moyenne vaut exactement $1$ quel que soit $N$. Par linéarité de la limite (la somme étant finie), on obtient :
+		\[ \lim_{N \to +\infty} \frac{1}{N} \sum_{n=1}^N P(x_n) = c_0. \]
+		Par ailleurs, calculons l'intégrale de $P$ sur une période :
+		\[ \frac{1}{2\pi} \int_0^{2\pi} P(t) dt = \sum_{k=-M}^M c_k \left( \frac{1}{2\pi} \int_0^{2\pi} e^{ikt} dt \right) = c_0, \]
+		car l'intégrale de $e^{ikt}$ sur $[0, 2\pi]$ est nulle pour $k \neq 0$, et vaut $2\pi$ pour $k = 0$.
+		Le résultat est donc vérifié pour tout polynôme trigonométrique.\\
+		
+		Étape 2 : Généralisation aux fonctions continues par densité\\
+		Soit $f$ une fonction continue et $2\pi$-périodique sur $\mathbb{R}$, et soit $\varepsilon > 0$.
+		D'après le théorème d'approximation de Weierstrass trigonométrique (ou théorème de Stone-Weierstrass), il existe un polynôme trigonométrique $P$ tel que $\|f - P\|_\infty \leq \varepsilon$, où $\| \cdot \|_\infty$ désigne la norme de la convergence uniforme sur $\mathbb{R}$.
+		
+		Majorons la différence qui nous intéresse en insérant judicieusement le polynôme $P$ et en utilisant l'inégalité triangulaire :
+		\begin{align*}
+			\Delta_N &= \left| \frac{1}{N} \sum_{n=1}^N f(x_n) - \frac{1}{2\pi} \int_0^{2\pi} f(t) dt \right| \\
+			&\leq \underbrace{\left| \frac{1}{N} \sum_{n=1}^N (f(x_n) - P(x_n)) \right|}_{A_N} 
+			+ \underbrace{\left| \frac{1}{N} \sum_{n=1}^N P(x_n) - \frac{1}{2\pi} \int_0^{2\pi} P(t) dt \right|}_{B_N} 
+			+ \underbrace{\left| \frac{1}{2\pi} \int_0^{2\pi} (P(t) - f(t)) dt \right|}_{C}
+		\end{align*}
+		
+		Majorons chaque terme :
+		\begin{enumerate}
+			\item Le terme $A_N$ : $\displaystyle A_N \leq \frac{1}{N} \sum_{n=1}^N |f(x_n) - P(x_n)| \leq \frac{1}{N} \sum_{n=1}^N \|f - P\|_\infty \leq \varepsilon$.
+			\item Le terme $C$ : $\displaystyle C \leq \frac{1}{2\pi} \int_0^{2\pi} |P(t) - f(t)| dt \leq \frac{1}{2\pi} \int_0^{2\pi} \|P - f\|_\infty dt \leq \varepsilon$.
+			\item Le terme $B_N$ : Puisque le résultat a été démontré à l'étape 1 pour le polynôme $P$, on sait que $B_N \xrightarrow[N \to +\infty]{} 0$. Il existe donc un entier $N_0$ tel que pour tout $N \geq N_0$, on ait $B_N \leq \varepsilon$.
+		\end{enumerate}
+		
+		En regroupant ces majorations, on obtient que pour tout $N \geq N_0$ :
+		\[ \Delta_N \leq \varepsilon + \varepsilon + \varepsilon = 3\varepsilon. \]
+	\end{proof}
+	
 	\section{Transformée de Fourier}
 	
 	\setcounter{exercise}{4}
-	\begin{exercise}
+	\begin{exercise}{(Polynômes et fonctions de Hermite)}
 		On travaille dans l'espace de Hilbert $H = L^2(\mathbb{R}, \mu)$ associé à la mesure (gaussienne standard) de probabilité $\mu$ sur $\mathbb{R}$ définie par $d\mu(x) = \frac{e^{-x^2/2}}{\sqrt{2\pi}}dx$. Pour $n \in \mathbb{N}$ et $x \in \mathbb{R}$, on note :
 		\[ h_n(x) = e^{x^2/2}g^{(n)}(x), \quad \text{où} \quad g(x) = e^{-x^2/2}. \]
 		
@@ -306,8 +367,155 @@
 		3.d) L'orthogonal de l'espace des polynômes est $\{0\}$, donc les polynômes sont denses dans $H$. La famille $(\lambda_n^{-1} h_n)$ est donc une base hilbertienne.
 	\end{proof}
 	
+	\begin{exercise}{(Échantillonnage de Shannon)}
+		On montre que les signaux à bande limitée peuvent se reconstruire à partir de la donnée d'une suite de valeurs. Formellement, on s'intéresse aux fonctions dont la transformée de Fourier est à support compact.
+		
+		\begin{enumerate}
+			\item Soit \( f \in L^1(\mathbb{R}) \) tel que (sans perte de généralité) \( \hat{f}(x) = 0 \) pour tout \( |x| > \pi \).
+			\begin{enumerate}
+				\item Rappeler pourquoi \( f \) admet un représentant continu, qui est en fait \( C^\infty \), sur \( \mathbb{R} \) et que pour tout \( t \in \mathbb{R} \),
+				\[
+				f(t) = \frac{1}{\sqrt{2\pi}} \int_{-\pi}^{\pi} \hat{f}(x) e^{ixt} dx.
+				\]
+				\item \textbf{Heuristique} = à ne pas mettre sur une copie. Sans chercher à justifier les calculs, montrer que :
+				\[
+				\hat{f}(x) = \sqrt{2\pi} \sum_{k \in \mathbb{Z}} f(k) e^{-2i\pi kx},
+				\]
+				(On pourra considérer la fonction \( 2\pi \)-périodique \( g \) qui vaut \( g(x) = \hat{f}(x) \) sur \( [-\pi, \pi] \) puis que
+				\[
+				f(t) = \sqrt{2\pi} \sum_{k \in \mathbb{Z}} f(k) \frac{\sin(\pi(t-k))}{\pi(t-k)}.
+				\]
+			\end{enumerate}
+			
+			\item Soit \( u \) une fonction de \( L^2(\mathbb{R}) \) dont la transformée de Fourier \( L^2 \), encore notée \( \hat{u} \), est nulle (presque partout) en dehors d'un segment de \( \mathbb{R} \). Montrer que \( \hat{u} \) est intégrable et que pour presque tout \( x \in \mathbb{R} \),
+			\[
+			\hat{\hat{u}}(x) = u(-x),
+			\]
+			et en déduire qu'il existe \( v \in \mathcal{C}_0(\mathbb{R}) \) telle que \( u = v \) presque partout.
+			
+			\item On introduit l'espace
+			\[
+			B = \left\{ u \in L^2(\mathbb{R}) ; \, \hat{u} = 0 \text{ pp sur } \mathbb{R} \setminus [-\pi, \pi] \right\}.
+			\]
+			Montrer que \( B \) est un sous-espace fermé de \( L^2(\mathbb{R}) \), sur lequel \( \| \cdot \|_\infty \leq \| \cdot \|_2 \).
+			
+			\item On posera \( \text{sinc}(t) = \frac{\sin(t)}{t} \) et pour \( n \in \mathbb{Z} \),
+			\[
+			s_n(x) = \sqrt{2\pi} \text{sinc}(\pi(x-n)).
+			\]
+			Montrer que la famille \( (s_n)_{n \in \mathbb{Z}} \) forme une base hilbertienne de \( B \).
+			
+			\item Montrer que pour tout \( u \in B \) on a
+			\[
+			u = \sum_{n \in \mathbb{Z}} f(n) s_n
+			\]
+			dans \( L^2(\mathbb{R}) \), c'est-à-dire avec convergence dans \( L^2 \) de la série, et que si on note encore \( u \) le représentant continu, on a pour tout \( x \in \mathbb{R} \)
+			\[
+			u(x) = \sum_{n \in \mathbb{Z}} f(n) s_n(x)
+			\]
+			avec convergence uniforme de la série sur \( \mathbb{R} \).
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item \begin{enumerate}
+				\item Comme $\hat{f}$ est à support compact, pour tout $n\in\mathbb{N}$, $|\hat{f}|=o(\frac{1}{|x^n|})$ en $|x|\rightarrow \infty$, donc $f\in\mathcal{C}^\infty$.\\
+				En particulier, $\hat{f}\in L¹$ donc la formule d'inversion de Fourier donne 
+				\[\forall t \in\mathbb{R}, f(t)=\frac{1}{2\pi}\int_{[-\pi,\pi]}\hat{f}(x)e^{ixt}dx\]
+				\item \textbf{Heuristique :}
+				Sur $[-\pi, \pi]$, $\hat{f}$ peut être développée en série de Fourier. Les coefficients sont :
+				$c_k = \frac{1}{2\pi} \int_{-\pi}^\pi \hat{f}(x)e^{-ikx} dx$. D'après la formule d'inversion en $t=k$, on voit que $c_k = \frac{1}{\sqrt{2\pi}} f(-k)$.
+				Le développement est $\hat{f}(x) = \sum \frac{1}{\sqrt{2\pi}} f(-k) e^{ikx}$. En changeant $k$ en $-k$, on obtient la formule de l'énoncé. 
+				En injectant cette somme dans l'intégrale d'inversion :
+				\[ f(t) = \frac{1}{\sqrt{2\pi}} \int_{-\pi}^\pi \left( \sqrt{2\pi} \sum_{k \in \mathbb{Z}} f(k) e^{-ikx} \right) e^{ixt} dx = \sum_{k \in \mathbb{Z}} f(k) \int_{-\pi}^\pi e^{ix(t-k)} dx \]
+				L'intégrale vaut $\left[ \frac{e^{ix(t-k)}}{i(t-k)} \right]_{-\pi}^\pi = \frac{2 \sin(\pi(t-k))}{t-k}$. D'où le résultat.
+			\end{enumerate}
+				
+			\item Si $\hat{u} \in L^2(\mathbb{R})$ est à support compact $K$, alors par l'inégalité de Cauchy-Schwarz :
+			\[ \int_K |\hat{u}(x)| dx \leq \sqrt{\text{mes}(K)} \left( \int_K |\hat{u}(x)|^2 dx \right)^{1/2} < \infty \]
+			Donc $\hat{u} \in L^1(\mathbb{R})$. Puisque $\hat{u} \in L^1 \cap L^2$, la formule d'inversion $L^1$ s'applique presque partout. On applique le résultat de la question 1 pour $f=u$, et on définit $v$ comme la transformée de Fourier inverse de $\hat{u}$.
+				
+			\item Posons $\Psi:L^{2}\rightarrow L^{2}$ l'application définie par $\Psi:u\rightarrow\widehat{u}\mathbf{1}_{[-\pi,\pi]}$ qui est une application linéaire continue par propriétés de la transformée de Fourier. On a donc $B=\ker\Psi$ qui est donc fermé.\\
+			$B$ est l'image réciproque du sous-espace fermé $\{ \phi \in L^2 \mid \phi = 0 \text{ sur } \mathbb{R} \setminus [-\pi, \pi] \}$ par la transformée de Fourier. Comme cette dernière est une isométrie de $L^2$ (théorème de Plancherel), $B$ est fermé. \\
+			Pour l'inégalité, si $u \in B$, $u(x) = \frac{1}{\sqrt{2\pi}} \int_{-\pi}^\pi \hat{u}(\xi)e^{ix\xi} d\xi$.
+			Par Cauchy-Schwarz : $|u(x)| \leq \frac{1}{\sqrt{2\pi}} \sqrt{2\pi} \|\hat{u}\|_2 = \|u\|_2$. Donc $\|u\|_\infty \leq \|u\|_2$.
+				
+			\item Posons pour tout $n\in\mathbb{Z}$,
+			\[f_n(t)=e^{int}\mathbf{1}_{[-\pi,\pi]}(t),\text{ pour tout }t\in\mathbb{R}\]
+			Alors pour $x\in\mathbb{R}$,
+			\[\widehat{f_n(x)}=\int_\mathbb{R}e^{i(n-x)t}\mathbf{1}_{[-\pi,\pi]}(t)dt=2\pi s_n(x)\]
+			On en déduit ainsi $\widehat{s_n(x)}=e^{-inx}\mathbf{1}_{[-\pi,\pi]}(x)$ pp.\\
+			Par Plancherel, pour $n,m\in\mathbb{Z}$ distincts :
+			\[\langle s_n,s_m\rangle=\frac{1}{2\pi}\langle \widehat{s_n}\widehat{s_m}\rangle=\frac{1}{2\pi}\int_{[-\pi,\pi]}e^{-i(n-m)x}dx=\delta_{n,m}\]
+			Donc $(s_n)_{n\in\mathbb{Z}}$ est une famille orthonormée.\\
+			Soit $u\in B$ telle que $\forall n\in\mathbb{Z}, \langle u,s_n\rangle=0$. Alors par Plancherel $\forall n\in\mathbb{Z}, \langle \widehat{u},\widehat{s_n}\rangle=0$, c'est à dire
+			\[\forall n\in\mathbb{Z}, \int_{[-\pi,\pi]}\widehat{u}(x)e^{-inx}dx=0\]
+			En considérant $\tilde{\widehat{u}}$ étendue par $2\pi$ périodicité, on a $\forall n\in\mathbb{Z}, \tilde{u}(n)=0$, donc $\tilde{u}=0$ pp et donc $u=0$ pp sur $[\pi,\pi]$. Ainsi la famille $(s_n)_{n\in\mathbb{Z}}$ est dense dans $L^{2}$. C'est donc une base hilbertienne de $B$.
+				
+			\item Comme $(s_n)$ est une base hilbertienne de $B$, tout $u \in B$ s'écrit $u = \sum \langle u, s_n \rangle s_n$ avec convergence dans $L^2$. 
+			Le coefficient est $\langle u, s_n \rangle = \int u(x) s_n(x) dx$. Par Plancherel, c'est aussi :
+			\[\langle \hat{u}, \hat{s}_n \rangle = \frac{1}{2\pi}\int_{-\pi}^{\pi}\widehat{u}(x)e^{inx}dx= u(n)\]
+			En utilisant le résultat de la première question.\\
+			Enfin, la convergence uniforme découle de l'inégalité sur les normes obtenue à la question 3 :
+			\[ \|u - \sum_{n=-N}^N u(n) s_n \|_\infty \leq \|u - \sum_{n=-N}^N u(n) s_n \|_2 \xrightarrow[N \to \infty]{} 0 \]
+			\item (Lien avec le théorème de Shannon en physique) En physique, le théorème de Shannon dit que pour ne pas perdre d'information lors de l'échantillonage d'un signal, il faut échantillonner à une fréquence supérieure à deux fois la fréquence maximale du signal. Dans l'exercice, la fréquence maximale du signal est $\pi$ puisque sa transformée de Fourier (ses fréquences) sont nulles au-delà. On doit donc échantillonner à une fréquence d'au moins $2\pi$, donc une période $T=\frac{2\pi}{2\pi}=1$ pour ne pas perdre d'information (c'est bien le cas ici). Lorsque la condition n'est pas respectée, on perd de l'information et on parle de repliement de spectre.
+			\centering
+			\includegraphics[width=0.8\textwidth]{img/shannon.png}			
+
+		\end{enumerate}
+	\end{proof}
+	
 	\setcounter{section}{9}
 	\section{Equations différentielles}
+	\setcounter{exercise}{0}
+	\begin{exercise}
+		Résoudre les équations différentielles suivantes :
+		\begin{enumerate}
+			\item $y'(t) = t^2y(t) + t^2$, avec $y(0) = 1$.
+			\item $y''(t) + y'(t) + y(t) = 0$, avec $y(0) = 0, y'(0) = 1$.
+			\item $y'(t) = A y(t)$, avec $A = \begin{pmatrix} 2 & 1 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 2 \end{pmatrix}$ et $y(0) = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}$.
+			\item $y'(t) + e^{t-y(t)} = 0$, avec $y(0) = 0$.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item L'équation est $y'(t) - t^2y(t) = t^2$. C'est une équation linéaire du premier ordre.
+			\begin{itemize}
+				\item {Solution homogène :} $y_h'(t) = t^2 y_h(t)$. Une primitive de $t^2$ est $\frac{t^3}{3}$. Donc $y_h(t) = C e^{t^3/3}$.
+				\item {Solution particulière :} On remarque la solution constante $y_p(t) = -1$ car $y_p' = 0$ et $t^2(-1) + t^2 = 0$.
+				\item {Solution générale :} $y(t) = C e^{t^3/3} - 1$.
+				\item {Condition initiale :} $y(0) = 1 \implies C e^{0} - 1 = 1 \implies C = 2$.
+			\end{itemize}
+			La solution est \textbf{$y(t) = 2e^{t^3/3} - 1$}.
+			\item L'équation caractéristique est $r^2 + r + 1 = 0$. Le discriminant est $\Delta = 1^2 - 4 = -3 = (i\sqrt{3})^2$.
+			Les racines sont $r = -\frac{1}{2} \pm i\frac{\sqrt{3}}{2}$.
+			La forme générale est $y(t) = e^{-t/2} \left[ A \cos\left(\frac{\sqrt{3}}{2}t\right) + B \sin\left(\frac{\sqrt{3}}{2}t\right) \right]$.
+			\begin{itemize}
+				\item $y(0) = 0 \implies A = 0$. Donc $y(t) = B e^{-t/2} \sin\left(\frac{\sqrt{3}}{2}t\right)$.
+				\item $y'(t) = B e^{-t/2} \left[ -\frac{1}{2}\sin\left(\frac{\sqrt{3}}{2}t\right) + \frac{\sqrt{3}}{2}\cos\left(\frac{\sqrt{3}}{2}t\right) \right]$.
+				\item $y'(0) = 1 \implies B \cdot \frac{\sqrt{3}}{2} = 1 \implies B = \frac{2}{\sqrt{3}}$.
+			\end{itemize}
+			La solution est \textbf{$y(t) = \frac{2}{\sqrt{3}} e^{-t/2} \sin\left(\frac{\sqrt{3}}{2}t\right)$}.
+			
+			\item Le système est $y'(t) = Ay(t)$. La solution est $y(t) = e^{tA}y(0)$.
+			On décompose $A = 2I + N$ avec $N = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{pmatrix}$. Comme $2I$ et $N$ commutent : $e^{tA} = e^{2tI}e^{tN} = e^{2t} e^{tN}$.
+			$N^2 = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ et $N^3 = 0$.
+			Donc $e^{tN} = I + tN + \frac{t^2}{2}N^2 = \begin{pmatrix} 1 & t & t^2/2 \\ 0 & 1 & t \\ 0 & 0 & 1 \end{pmatrix}$.
+			Le vecteur solution est $y(t) = e^{2t} \begin{pmatrix} 1 & t & t^2/2 \\ 0 & 1 & t \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}$.
+			D'où \textbf{$y(t) = e^{2t} \begin{pmatrix} 1 + t + \frac{t^2}{2} \\ 1 + t \\ 1 \end{pmatrix}$}.
+			
+			\item L'équation est $y'(t) = -e^t e^{-y(t)}$, ce qui s'écrit $e^{y(t)} y'(t) = -e^t$.
+			En intégrant par rapport à $t$ : $\int e^{y} dy = \int -e^t dt$.
+			On obtient $e^{y(t)} = -e^t + C$.
+			Condition initiale : $y(0) = 0 \implies e^0 = -e^0 + C \implies 1 = -1 + C \implies C = 2$.
+			Ainsi $e^{y(t)} = 2 - e^t$. En passant au logarithme :
+			La solution est \textbf{$y(t) = \ln(2 - e^t)$}, définie pour $t < \ln(2)$.
+		\end{enumerate}
+	\end{proof}
+	
+	
 	\setcounter{exercise}{2}
 	\begin{exercise}
 		Résoudre le problème différentiel suivant sur $\mathbb{R}$\\
