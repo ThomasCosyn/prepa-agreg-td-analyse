@@ -35,7 +35,75 @@
 \begin{document}
 	\maketitle
 	
-	\setcounter{section}{1}
+	\section{Suites et séries}
+	
+	\setcounter{exercise}{8}
+	\begin{exercise}{(Recherche d’équivalent)}
+		On se donne $u_0 > 0$ et on construit par récurrence la suite $u_{n+1}=u_n+\frac{1}{u_n}$ pour $n \geq 0$. Donner un équivalent à la suite $u_n$.
+	\end{exercise}
+	
+	\begin{proof}
+		Par une récurrence immédiate on voit que $\forall n\in\mathbb{N}, u_n>0$.\\
+		Ainsi on a une suite définie par récurrence $u_{n+1}=f(u_n)$ pour la fonction $f\mapsto x+\frac{1}{x}$ qui est continue sur $\mathbb{R}^*_+$ et au-dessus de l'identité. Donc $(u_n)_n$ est croissante.\\
+		Soit elle diverge vers $+\infty$, soit elle converge vers une limite $l$ solution de :
+		\[l=l+\frac{1}{l}\]
+		Cela n'est pas possible donc $u_n \rightarrow +\infty$ \\
+		Pour trouver un équivalent, calculons :
+		\[u_{n+1}^{2}=u_n^{2}+2+\frac{1}{u_n^{2}}\]
+		On a donc :
+		\[u_{n+1}^{2}-u_{n}^{2} \sim 2\]
+		Par le théorème de Césaro :
+		\[\frac{1}{n}\sum_{k=0}^n(u_{k+1}^{2}-u_k^{2}) \sim 2\]
+		Et par télescopage :
+		\[u_n^{2}\sim 2n\]
+		Conclusion :
+		\[u_n^{2}\sim \sqrt{2n}\]
+	\end{proof}
+	
+	\setcounter{exercise}{23}
+	\begin{exercise}
+		Soit $u = (u_n)_{n \ge 1}$ une suite de nombres réels ou complexes, non nuls. On lui associe la suite des produits partiels $(p_n)_{n \ge 1}$ définie pour $n \ge 1$ par $p_n = \prod_{k=1}^n u_k$. On dira que le produit infini de terme général $u_n$ (ou de manière abrégée $\prod u_n$) converge lorsque la suite $(p_n)$ admet une limite \textbf{finie non nulle}.
+		
+		\begin{enumerate}
+			\item Montrer que si le produit infini $\prod u_n$ converge, alors la suite $(u_n)$ converge vers $1$. Étudier la réciproque en simplifiant $\prod_{k=1}^n \left(1 + \frac{1}{k}\right)$.
+			\item Soit $z$ un nombre complexe tel que $|z| < 1$.
+			\begin{enumerate}
+				\item Calculer $(1 - z^2) \prod_{k=1}^n (1 + z^{2^k})$.
+				\item En déduire que le produit infini $\prod (1 + z^{2^n})$ converge et donner la valeur du produit.
+			\end{enumerate}
+			\item On suppose $u = (u_n)_{n \ge 1}$ est une suite réelle avec $u_n > 0$ pour tout $n$. Montrer que le produit infini $\prod u_n$ converge si et seulement si la série $\sum \log u_n$ converge.
+			\item On suppose $u = (u_n)_{n \ge 1}$ est une suite qui converge vers $1$ avec $u_n > 1$ pour tout $n$. Montrer que le produit infini $\prod u_n$ converge si et seulement si la série $\sum (u_n - 1)$ converge.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item
+			\begin{itemize}
+				\item Si $\prod u_n$ converge, alors $p_n \to L \in \mathbb{C}^*$. Pour $n > 1$, on a $u_n = \frac{p_n}{p_{n-1}}$. Par passage à la limite, $u_n \to \frac{L}{L} = 1$.
+				\item Soit $u_n = 1 + \frac{1}{n}$. On a bien $u_n \to 1$. Cependant par télescopage :
+				\[ p_n = \prod_{k=1}^n \frac{k+1}{k} = \frac{2}{1} \cdot \frac{3}{2} \cdots \frac{n+1}{n} = n+1 \]
+				Comme $p_n \to +\infty$, le produit infini diverge. La réciproque est donc fausse.
+			\end{itemize}
+			
+			\item
+			\begin{enumerate}
+				\item Notons $P_n = (1 - z^2) \prod_{k=1}^n (1 + z^{2^k})$. Par récurrence :
+				Pour $n=1$, $(1-z^2)(1+z^2) = 1-z^4 = 1-z^{2^2}$.
+				En supposant $P_n = 1-z^{2^{n+1}}$, on a $P_{n+1} = P_n(1+z^{2^{n+1}}) = (1-z^{2^{n+1}})(1+z^{2^{n+1}}) = 1-(z^{2^{n+1}})^2 = 1-z^{2^{n+2}}$.
+				L'expression vaut donc $1 - z^{2^{n+1}}$.
+				\item Comme $|z| < 1$, $z^{2^{n+1}} \to 0$ quand $n \to \infty$. Ainsi $P_n \to 1$. Le produit infini converge vers $\frac{1}{1-z^2}$.
+			\end{enumerate}
+			
+			\item Posons $S_n = \sum_{k=1}^n \log u_k$. On a $p_n = \prod_{k=1}^n u_k = \exp(S_n)$. 
+			Par continuité de l'exponentielle et du logarithme sur $\mathbb{R}_+^*$, $(p_n)$ converge vers $L > 0$ si et seulement si $(S_n)$ converge vers $\log L$.
+			
+			\item Posons $a_n = u_n - 1 > 0$. On a $u_n \to 1 \implies a_n \to 0$. 
+			D'après la question précédente, le produit converge ssi $\sum \log(1+a_n)$ converge.
+			Or, au voisinage de $0$, $\log(1+a_n) \sim a_n$. Comme ce sont des séries à termes positifs, par théorème de comparaison, elles sont de même nature. Ainsi, $\prod u_n$ converge ssi $\sum (u_n - 1)$ converge.
+		\end{enumerate}
+	\end{proof}
+	
 	\section{Fonctions d'une variable réelle}
 	
 	\setcounter{exercise}{23}
@@ -63,7 +131,108 @@
 		D'où la convexité de $f$.
 	\end{proof}
 	
-	\setcounter{section}{3}
+	\section{Analyse complexe}
+	
+	\setcounter{exercise}{10}
+	\begin{exercise}
+		\begin{enumerate}
+			\item Soit $\varphi$ une fonction holomorphe sur un ouvert $U$ de $\mathbb{C}$. On peut la voir comme une application de $U \subset \mathbb{R}^2$ vers $\mathbb{R}^2$. Montrer que son déterminant jacobien au point $z$ vaut $|\varphi'(z)|^2$.
+			\item Soit $D = \{z \in \mathbb{C} \mid |z| < 1\}$. Vérifier que la formule $\varphi(z) = \frac{2z - i}{iz + 2}$ définit une bijection holomorphe de $D$ sur $D$.
+			\item Utiliser la formule de changement de variables pour en déduire la valeur de l'intégrale 
+			\[ I = \iint_D \frac{dxdy}{(x^2 + (y - 2)^2)^2}. \]
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item Déterminant Jacobien :
+			Posons $z = x + iy$ et $\varphi(z) = u(x,y) + iv(x,y)$. La matrice jacobienne de $\varphi$ vue comme application de $\mathbb{R}^2$ est :
+			\[ J_\varphi(z) = \begin{pmatrix} \frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} \\ \frac{\partial v}{\partial x} & \frac{\partial v}{\partial y} \end{pmatrix} \]
+			Comme $\varphi$ est holomorphe, elle vérifie les conditions de Cauchy-Riemann : $\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}$ et $\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$. Le déterminant vaut donc :
+			\[ \det(J_\varphi(z)) = \frac{\partial u}{\partial x} \frac{\partial v}{\partial y} - \frac{\partial u}{\partial y} \frac{\partial v}{\partial x} = \left(\frac{\partial u}{\partial x}\right)^2 + \left(\frac{\partial v}{\partial x}\right)^2 \]
+			Or, par définition de la dérivée complexe, $\varphi'(z) = \frac{\partial u}{\partial x} + i \frac{\partial v}{\partial x}$. Ainsi, $|\varphi'(z)|^2 = \left(\frac{\partial u}{\partial x}\right)^2 + \left(\frac{\partial v}{\partial x}\right)^2$. On a bien $\det(J_\varphi(z)) = |\varphi'(z)|^2$.
+			
+			\item Bijection de $D$ sur $D$ :
+			$\varphi$ est holomorphe sur $\mathbb{C} \setminus \{2i\}$. Comme $2i \notin D$, $\varphi$ est holomorphe sur $D$. \\
+			Son inverse est donnée par $\varphi^{-1}(z)=\frac{2z+i}{2-iz}$ \\
+			Pour le bord $|z|=1$, on calcule $|\varphi(z)|^2 = \frac{|2z-i|^2}{|iz+2|^2}$.
+			\[ |2z-i|^2 = (2z-i)(2\bar{z}+i) = 4|z|^2 + 2zi - 2\bar{z}i + 1 = 5 + 2i(z-\bar{z}) \]
+			\[ |iz+2|^2 = (iz+2)(-i\bar{z}+2) = |z|^2 + 2iz - 2i\bar{z} + 4 = 5 + 2i(z-\bar{z}) \]
+			Ainsi, si $|z|=1$, alors $|\varphi(z)|=1$. Par le principe du maximum (et comme $\varphi(i/2)=0$), $\varphi$ envoie $D$ dans $D$. C'est une bijection car par les mêmes arguments, son inverse est envoie également $D$ sur $D$.
+			
+			\item Calcul de l'intégrale :
+			Remarquons que $|iz+2|^2 = |i(z - 2i)|^2 = |z-2i|^2 = x^2 + (y-2)^2$. L'intégrande est donc $\frac{1}{|iz+2|^4}$.
+			Calculons la dérivée : $\varphi'(z) = \frac{2(iz+2) - i(2z-i)}{(iz+2)^2} = \frac{2iz+4-2iz+i^2}{(iz+2)^2} = \frac{3}{(iz+2)^2}$.
+			On en déduit que $|\varphi'(z)|^2 = \frac{9}{|iz+2|^4}$, soit $\frac{1}{(x^2 + (y-2)^2)^2} = \frac{1}{9} |\varphi'(z)|^2$.
+			Par changement de variables $w = \varphi(z)$ :
+			\[ I = \iint_D \frac{1}{9} |\varphi'(z)|^2 dxdy = \frac{1}{9} \iint_{\varphi(D)} dudv \]
+			Comme $\varphi(D) = D$, l'intégrale devient :
+			\[ I = \frac{1}{9} \text{Aire}(D) = \frac{\pi}{9} \]
+		\end{enumerate}
+		
+	\end{proof}
+	
+	\setcounter{exercise}{12}
+	\begin{exercise}
+		\begin{enumerate}
+			\item Soient $R > \epsilon > 0$ et $\gamma$ un lacet qui paramètre le bord de l'ouvert $\Omega = \{z \in \mathbb{C} \mid \epsilon < |z| < R \text{ et } \text{Im}(z) > 0\}$ dans le sens trigonométrique. Montrer que l'intégrale $\int_\gamma \frac{e^{iz}}{z} dz$ est nulle.
+			\item En déduire la formule classique $\int_0^{+\infty} \frac{\sin t}{t} dt = \frac{\pi}{2}$.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item On pose $f(z) = \frac{e^{iz}}{z}$. 
+			La fonction $f$ est holomorphe sur $\mathbb{C}^* = \mathbb{C} \setminus \{0\}$.
+			L'ouvert $\Omega$ est un demi-anneau situé dans le demi-plan supérieur. Son adhérence $\overline{\Omega}$ est un compact qui ne contient pas l'origine ($0 \notin \overline{\Omega}$ car $\epsilon > 0$).
+			Ainsi, $f$ est holomorphe sur un ouvert simplement connexe contenant le compact $\overline{\Omega}$. 
+			D'après le théorème de Cauchy, l'intégrale d'une fonction holomorphe sur un lacet fermé (ici le bord de $\Omega$ orienté positivement) est nulle :
+			\[ \int_\gamma \frac{e^{iz}}{z} dz = 0 \]
+			
+			\item Le lacet $\gamma$ se décompose en quatre chemins :
+			\begin{itemize}
+				\item $\gamma_1$ : le segment réel $[\epsilon, R]$, paramétré par $z(t) = t$ avec $t \in [\epsilon, R]$.
+				\item $\gamma_R$ : le grand demi-cercle, paramétré par $z(\theta) = Re^{i\theta}$ avec $\theta \in [0, \pi]$.
+				\item $\gamma_2$ : le segment réel $[-R, -\epsilon]$, paramétré par $z(t) = t$ avec $t \in [-R, -\epsilon]$.
+				\item $\gamma_\epsilon$ : le petit demi-cercle parcouru dans le sens anti-trigonométrique (pour fermer le lacet), paramétré par $z(\theta) = \epsilon e^{i\theta}$ avec $\theta$ allant de $\pi$ à $0$.
+			\end{itemize}
+			L'équation de la question 1 s'écrit :
+			\[ \int_{\gamma_1} f(z) dz + \int_{\gamma_R} f(z) dz + \int_{\gamma_2} f(z) dz + \int_{\gamma_\epsilon} f(z) dz = 0 \]
+			
+			a) Regroupement des intégrales sur l'axe réel :
+			\begin{align*}
+				\int_{\gamma_1} f(z) dz + \int_{\gamma_2} f(z) dz &= \int_\epsilon^R \frac{e^{it}}{t} dt + \int_{-R}^{-\epsilon} \frac{e^{it}}{t} dt \\
+				&= \int_\epsilon^R \frac{e^{it}}{t} dt + \int_R^\epsilon \frac{e^{-iu}}{-u} (-du) \quad \text{(changement de variable } u = -t \text{)} \\
+				&= \int_\epsilon^R \frac{e^{it} - e^{-it}}{t} dt = 2i \int_\epsilon^R \frac{\sin(t)}{t} dt
+			\end{align*}
+			
+			b) Majoration sur le grand cercle $\gamma_R$ (Lemme de Jordan) :
+			\[ I_R = \int_{\gamma_R} \frac{e^{iz}}{z} dz = \int_0^\pi \frac{e^{iR(\cos\theta + i\sin\theta)}}{Re^{i\theta}} iR e^{i\theta} d\theta = i \int_0^\pi e^{-R\sin\theta} e^{iR\cos\theta} d\theta \]
+			Majorons le module de cette intégrale :
+			\[ |I_R| \leq \int_0^\pi e^{-R\sin\theta} d\theta = 2 \int_0^{\pi/2} e^{-R\sin\theta} d\theta \]
+			Sur $[0, \pi/2]$, la concavité du sinus donne $\sin\theta \geq \frac{2}{\pi}\theta$, d'où :
+			\[ |I_R| \leq 2 \int_0^{\pi/2} e^{-\frac{2R}{\pi}\theta} d\theta = 2 \left[ \frac{-\pi}{2R} e^{-\frac{2R}{\pi}\theta} \right]_0^{\pi/2} = \frac{\pi}{R} \left( 1 - e^{-R} \right) \]
+			On a donc bien $\lim_{R \to +\infty} I_R = 0$.
+			
+			\textbf{c) Étude sur le petit cercle $\gamma_\epsilon$ :}
+			Autour de $0$, on peut écrire $e^{iz} = 1 + iz + o(z)$. Donc $f(z) = \frac{1}{z} + i + o(1)$.
+			L'intégrale devient :
+			\[ I_\epsilon = \int_{\gamma_\epsilon} \frac{e^{iz}}{z} dz = \int_{\gamma_\epsilon} \frac{1}{z} dz + \int_{\gamma_\epsilon} g(z) dz \]
+			où $g$ est une fonction bornée au voisinage de $0$. 
+			La longueur du chemin $\gamma_\epsilon$ étant $\pi\epsilon$, l'intégrale de la fonction bornée tend vers $0$ quand $\epsilon \to 0$.
+			Pour la partie singulière, on paramètre par $z(\theta) = \epsilon e^{i\theta}$ avec $\theta$ allant de $\pi$ à $0$ (sens horaire) :
+			\[ \int_{\gamma_\epsilon} \frac{1}{z} dz = \int_\pi^0 \frac{1}{\epsilon e^{i\theta}} i\epsilon e^{i\theta} d\theta = i \int_\pi^0 d\theta = -i\pi \]
+			Ainsi, $\lim_{\epsilon \to 0} I_\epsilon = -i\pi$.
+			
+			\textbf{d) Conclusion :}
+			En passant à la limite quand $R \to +\infty$ et $\epsilon \to 0$ dans l'équation de Cauchy initiale, on obtient :
+			\[ 2i \int_0^{+\infty} \frac{\sin(t)}{t} dt + 0 - i\pi = 0 \]
+			En divisant par $2i$, on trouve finalement :
+			\[ \int_0^{+\infty} \frac{\sin(t)}{t} dt = \frac{\pi}{2} \]
+		\end{enumerate}
+		
+	\end{proof}
+	
 	\section{Topologie}
 	
 	\setcounter{exercise}{2}
@@ -261,7 +430,51 @@
 			Ceci achève la démonstration.
 		\end{proof}
 	
-	\setcounter{section}{6}
+	\section{Espaces de Hilbert}
+	
+	\setcounter{exercise}{9}
+	\begin{exercise}{(Opérateurs de Hilbert-Schmidt)}
+		Soit $H$ un espace de Hilbert muni d'une base hilbertienne $(e_i)_{i \in \mathbb{N}}$. Pour $u \in B(H)$, on pose : 
+		\[ \|u\|_{HS} = \sqrt{\sum_{i=0}^{+\infty} \|u(e_i)\|^2}, \text{ puis } \mathcal{HS}(H) = \{u \in B(H) \mid \|u\|_{HS} < +\infty \}. \]
+		
+		\begin{enumerate}
+			\item Soient $u \in B(H)$ et $(f_j)$ une (autre) base hilbertienne de $H$. Vérifier la formule :
+			\[ \sum_{i,j} |\langle u(e_i), f_j \rangle|^2 = \|u\|_{HS}^2 ; \]
+			en déduire que $\|u^*\|_{HS} = \|u\|_{HS}$ et que $\|u\|_{HS}$ ne dépend pas de la base hilbertienne $(e_i)$ choisie.
+			\item Montrer que $\mathcal{HS}(H)$ est un idéal bilatère de l'algèbre $B(H)$.
+			\item Montrer que tout $u \in \mathcal{HS}(H)$ vérifie $\|u\| \le \|u\|_{HS}$.
+			\item Montrer que $(\mathcal{HS}(H), \|\cdot\|_{HS})$ est un espace de Banach.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item Fixons $i \in \mathbb{N}$. Comme $(f_j)$ est une base hilbertienne, l'égalité de Parseval donne :
+			\[ \|u(e_i)\|^2 = \sum_{j=0}^{+\infty} |\langle u(e_i), f_j \rangle|^2. \]
+			En sommant sur $i$, on obtient :
+			\[ \sum_{i,j} |\langle u(e_i), f_j \rangle|^2 = \sum_i \|u(e_i)\|^2 = \|u\|_{HS}^2. \]
+			Par ailleurs, on sait que $\langle u(e_i), f_j \rangle = \langle e_i, u^*(f_j) \rangle = \overline{\langle u^*(f_j), e_i \rangle}$. Donc :
+			\[ \sum_{i,j} |\langle u(e_i), f_j \rangle|^2 = \sum_j \left( \sum_i |\langle u^*(f_j), e_i \rangle|^2 \right). \]
+			En utilisant Parseval pour la base $(e_i)$ cette fois, la somme intérieure vaut $\|u^*(f_j)\|^2$. On en déduit $\|u\|_{HS}^2 = \sum_j \|u^*(f_j)\|^2 = \|u^*\|_{HS}^2$ (calculé dans la base $f$). Cela prouve que la valeur ne dépend pas de la base de départ et que $\|u\|_{HS} = \|u^*\|_{HS}$.
+			
+			\item Soit $u \in \mathcal{HS}(H)$ et $v \in B(H)$.
+			\begin{itemize}
+				\item à gauche : $\|vu\|_{HS}^2 = \sum_i \|v(u(e_i))\|^2 \le \sum_i \|v\|^2 \|u(e_i)\|^2 = \|v\|^2 \|u\|_{HS}^2 < \infty$.
+				\item à droite : en utilisant la question précédente : $\|uv\|_{HS} = \|(uv)^*\|_{HS} = \|v^* u^*\|_{HS}$. Comme $v^* \in B(H)$ et $u^* \in \mathcal{HS}(H)$, on se ramène au cas précédent : $\|uv\|_{HS} \le \|v^*\| \|u^*\|_{HS} = \|v\| \|u\|_{HS} < \infty$.
+			\end{itemize}
+			
+			\item Soit $x \in H$ tel que $\|x\|=1$. On peut compléter $x$ en une base hilbertienne $(g_i)$ telle que $g_0 = x$. Alors :
+			\[ \|u(x)\|^2 = \|u(g_0)\|^2 \le \sum_{i=0}^{+\infty} \|u(g_i)\|^2 = \|u\|_{HS}^2. \]
+			En prenant le supremum sur les $x$ de norme 1, on obtient $\|u\| \le \|u\|_{HS}$.
+			
+			\item $\mathcal{HS}(H)$ est un espace préhilbertien pour le produit scalaire $\langle u, v \rangle_{HS} = \sum_i \langle u(e_i), v(e_i) \rangle$. Montrons qu'il est complet. 
+			Soit $(u_n)$ une suite de Cauchy pour $\|\cdot\|_{HS}$. D'après la Q3, elle est aussi de Cauchy pour $\|\cdot\|$, donc $u_n \to u$ dans $B(H)$.
+			Pour tout $N \in \mathbb{N}$, $\sum_{i=0}^N \|(u_n - u_m)(e_i)\|^2 \le \|u_n - u_m\|_{HS}^2$.
+			En fixant $n$ et en faisant tendre $m \to \infty$ : $\sum_{i=0}^N \|(u_n - u)(e_i)\|^2 \le \epsilon^2$.
+			En faisant enfin tendre $N \to \infty$, on a $\|u_n - u\|_{HS} \le \epsilon$. Ainsi $u_n - u \in \mathcal{HS}(H)$, donc $u \in \mathcal{HS}(H)$ et $u_n \to u$ pour la norme HS.
+		\end{enumerate}
+	\end{proof}
+	
 	\section{Séries de Fourier}
 	
 	\setcounter{exercise}{5}
@@ -310,6 +523,46 @@
 	\end{proof}
 	
 	\section{Transformée de Fourier}
+	
+	\setcounter{exercise}{1}
+	\begin{exercise}{(Variante)}
+		Soit $f$ une fonction intégrable nulle en dehors du segment $[-a, a]$, $a > 0$. Montrer que $\hat{f}$ s'étend en une fonction holomorphe sur $\mathbb{C}$, qui de plus vérifie 
+		\[ |\hat{f}(iy)| \le C e^{2a|y|}, \quad \forall y \in \mathbb{R}. \]
+	\end{exercise}
+	
+	\begin{proof}
+
+	\begin{enumerate}
+		\item Extension holomorphe sur $\mathbb{C}$ :
+		La transformée de Fourier de $f$ pour $\xi \in \mathbb{R}$ est définie par :
+		\[ \hat{f}(\xi) = \int_{-\infty}^{+\infty} f(t) e^{-it\xi} \, dt = \int_{-a}^{a} f(t) e^{-it\xi} \, dt \]
+		Pour étendre cette fonction au plan complexe, on définit pour $z \in \mathbb{C}$ :
+		\[ F(z) = \int_{-a}^{a} f(t) e^{-itz} \, dt \]
+		Vérifions les conditions du théorème de dérivation sous le signe intégral (version holomorphe) :
+		\begin{itemize}
+			\item Pour presque tout $t \in [-a, a]$, la fonction $z \mapsto f(t) e^{-itz}$ est entière (holomorphe sur $\mathbb{C}$).
+			\item La fonction $t \mapsto f(t) e^{-itz}$ est mesurable (et intégrable car $f \in L^1$ et l'exponentielle est bornée sur le segment $[-a, a]$ pour $z$ fixé).
+			\item Domination locale : Soit $K$ un compact de $\mathbb{C}$. Il existe $M > 0$ tel que pour tout $z \in K$, $|\text{Im}(z)| \le M$. Pour $t \in [-a, a]$ et $z \in K$ :
+			\[ |f(t) e^{-itz}| = |f(t)| \cdot |e^{-it(\text{Re}(z) + i\text{Im}(z))}| = |f(t)| e^{t\text{Im}(z)} \le |f(t)| e^{aM} \]
+			La fonction $t \mapsto |f(t)| e^{aM}$ est intégrable sur $[-a, a]$.
+		\end{itemize}
+		Ainsi, $F$ est holomorphe sur $\mathbb{C}$ et coïncide avec $\hat{f}$ sur l'axe réel.
+		
+		\item Soit $y \in \mathbb{R}$. On calcule $\hat{f}(iy)$ en utilisant l'extension précédente :
+		\[ |\hat{f}(iy)| = \left| \int_{-a}^{a} f(t) e^{-it(iy)} \, dt \right| = \left| \int_{-a}^{a} f(t) e^{ty} \, dt \right| \]
+		En utilisant l'inégalité triangulaire intégrale :
+		\[ |\hat{f}(iy)| \le \int_{-a}^{a} |f(t)| e^{ty} \, dt \]
+		Comme $t \in [-a, a]$, on a $ty \le |t| \cdot |y| \le a|y|$. L'exponentielle étant croissante :
+		\[ e^{ty} \le e^{a|y|} \]
+		D'où :
+		\[ |\hat{f}(iy)| \le \left( \int_{-a}^{a} |f(t)| \, dt \right) e^{a|y|} \]
+		En posant $C = \|f\|_1 = \int_{-a}^{a} |f(t)| \, dt$, on obtient $|\hat{f}(iy)| \le C e^{a|y|}$.
+		
+		Enfin, puisque $a > 0$ et $|y| \ge 0$, on a $a|y| \le 2a|y|$, ce qui implique $e^{a|y|} \le e^{2a|y|}$. On a donc bien la majoration demandée :
+		\[ |\hat{f}(iy)| \le C e^{2a|y|} \]
+	\end{enumerate}
+
+	\end{proof}
 	
 	\setcounter{exercise}{4}
 	\begin{exercise}{(Polynômes et fonctions de Hermite)}
@@ -466,8 +719,87 @@
 		\end{enumerate}
 	\end{proof}
 	
-	\setcounter{section}{9}
-	\section{Equations différentielles}
+	
+	\section{Calcul différentiel}
+	
+	\setcounter{exercise}{2}
+	\begin{exercise}
+		Soit $F : \mathbb{R}^n \to \mathbb{R}^n$ une fonction de classe $C^1$ pour laquelle il existe $\delta > 0$ tel que 
+		\[ \|F(x) - F(y)\| \ge \delta \|x - y\| \quad \text{pour tout } x, y \in \mathbb{R}^n. \]
+		\begin{enumerate}
+			\item Montrer que $F$ est injective et que $F(\mathbb{R}^n)$ est fermé.
+			\item Montrer que $dF$ est inversible en tout point de $\mathbb{R}^n$.
+			\item Montrer que $F(\mathbb{R}^n)$ est ouvert, et en déduire que $F$ est un $C^1$ difféomorphisme de $\mathbb{R}^n$ dans $\mathbb{R}^n$.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+	\begin{enumerate}
+		\item Injectivité et caractère fermé :
+		\begin{itemize}
+			\item Injectivité : Soient $x, y \in \mathbb{R}^n$ tels que $F(x) = F(y)$. L'inégalité donne $0 = \|F(x) - F(y)\| \ge \delta \|x - y\|$. Comme $\delta > 0$, on a nécessairement $\|x - y\| = 0$, soit $x = y$. $F$ est donc injective.
+			\item Fermé : Soit $(y_k)_{k \in \mathbb{N}}$ une suite de $F(\mathbb{R}^n)$ convergeant vers $y \in \mathbb{R}^n$. Il existe une suite $(x_k)$ telle que $y_k = F(x_k)$. L'inégalité de l'énoncé implique :
+			\[ \|x_k - x_p\| \le \frac{1}{\delta} \|F(x_k) - F(x_p)\| = \frac{1}{\delta} \|y_k - y_p\|. \]
+			Comme $(y_k)$ converge, elle est de Cauchy. Par l'inégalité ci-dessus, $(x_k)$ est aussi une suite de Cauchy dans $\mathbb{R}^n$. Comme $\mathbb{R}^n$ est complet, $x_k \to x \in \mathbb{R}^n$. $F$ étant continue (car $C^1$), on a $F(x_k) \to F(x)$, d'où $y = F(x)$. Ainsi $y \in F(\mathbb{R}^n)$, donc $F(\mathbb{R}^n)$ est fermé.
+		\end{itemize}
+		
+		\item Inversibilité de la différentielle :
+		Soit $a \in \mathbb{R}^n$ et $h \in \mathbb{R}^n$. Par définition de la différentielle :
+		\[ F(a+th) = F(a) + D_aF(th) + \|th\|\epsilon(th) = F(a) + t D_aF(h) + t\|h\|\epsilon(th) \text{ quand } t \to 0. \]
+		En utilisant l'inégalité de l'énoncé pour $x = a+th$ et $y = a$ :
+		\[ \|F(a+th) - F(a)\| \ge \delta \|th\| = \delta |t| \|h\|. \]
+		En divisant par $|t| > 0$ et en faisant tendre $t$ vers 0 :
+		\[ \left\| D_aF(h) + \|h\|\epsilon(ht) \right\| \ge \delta \|h\| \implies \|D_aF(h)\| \ge \delta \|h\|. \]
+		Si $D_aF(h) = 0$, alors $\delta \|h\| \le 0$, donc $h=0$. L'application linéaire $D_aF$ est donc injective. Comme elle va de $\mathbb{R}^n$ dans lui-même (dimension finie), elle est bijective, donc inversible.
+		
+		\item Difféomorphisme global :
+		\begin{itemize}
+			\item Ouvert : En tout point $x \in \mathbb{R}^n$, $F$ est de classe $C^1$ et sa différentielle est inversible. D'après le théorème d'inversion locale, $F$ est un difféomorphisme local. En particulier, l'image de tout ouvert est un ouvert. Comme $\mathbb{R}^n$ est ouvert, $F(\mathbb{R}^n)$ est ouvert.
+			\item Surjectivité : $F(\mathbb{R}^n)$ est une partie de $\mathbb{R}^n$ non vide, à la fois ouverte et fermée. $\mathbb{R}^n$ étant connexe, les seules parties à la fois ouvertes et fermées sont $\emptyset$ et $\mathbb{R}^n$. Donc $F(\mathbb{R}^n) = \mathbb{R}^n$ et $F$ est surjective.
+			\item Conclusion : $F$ est une bijection de classe $C^1$ dont la différentielle est partout inversible. D'après le théorème d'inversion globale, $F$ est un $C^1$ difféomorphisme de $\mathbb{R}^n$ sur $\mathbb{R}^n$.
+		\end{itemize}
+	\end{enumerate}
+	\end{proof}
+	
+	\setcounter{exercise}{20}
+	\begin{exercise}{(Principe du maximum)}
+		Soit $\Omega$ un ouvert borné de $\mathbb{R}^n$, et soit $f : \overline{\Omega} \to \mathbb{R}$ une fonction continue sur $\overline{\Omega}$, de classe $C^2$ sur $\Omega$.
+		\begin{enumerate}
+			\item Montrer que $f$ est majorée et atteint sa borne supérieure.
+			\item On suppose que $\Delta f(x) > 0$ pour tout $x \in \Omega$. Montrer que le maximum de $f$ sur $\overline{\Omega}$ ne peut pas être atteint en un point de $\Omega$.
+			\item On suppose que $\Delta f(x) \ge 0$ pour tout $x \in \Omega$. Montrer que 
+			\[ \max_{\overline{\Omega}} f = \max_{\partial \Omega} f. \]
+			On pourra considérer $g(x) = f(x) + \frac{\epsilon}{2}|x|^2$.
+			\item Montrer que si $f$ vérifie $\Delta f = 0$ dans $\Omega$ et $f = 0$ sur $\partial \Omega$, alors $f$ est identiquement nulle.
+		\end{enumerate}
+	\end{exercise}
+	
+	\begin{proof}
+		\begin{enumerate}
+			\item L'ensemble $\overline{\Omega}$ est un fermé borné de $\mathbb{R}^n$, c'est donc un compact. Comme la fonction $f$ est continue sur ce compact, le théorème des bornes atteintes assure que $f$ est majorée et qu'elle atteint ses bornes (supérieure et inférieure) en au moins un point de $\overline{\Omega}$.
+			
+			\item Supposons par l'absurde que $f$ atteigne son maximum en un point $x_0 \in \Omega$. Comme $\Omega$ est ouvert et $f$ est $C^2$, les conditions nécessaires d'optimalité du second ordre s'appliquent :
+			\begin{itemize}
+				\item Le gradient est nul : $\nabla f(x_0) = 0$.
+				\item La matrice Hessienne $H_f(x_0)$ est symétrique négative (ses valeurs propres sont $\le 0$).
+			\end{itemize}
+			Or, le Laplacien est la trace de la matrice Hessienne : $\Delta f(x_0) = \text{tr}(H_f(x_0))$. La trace d'une matrice symétrique négative est nécessairement inférieure ou égale à $0$. Cela contredit l'hypothèse $\Delta f(x_0) > 0$. Le maximum est donc nécessairement atteint sur le bord $\partial \Omega$.
+			
+			\item Soit $\epsilon > 0$. Posons $g(x) = f(x) + \frac{\epsilon}{2n} |x|^2$ (en adaptant l'indication pour simplifier le calcul). On a :
+			\[ \Delta g(x) = \Delta f(x) + \frac{\epsilon}{2n} \Delta(|x|^2) = \Delta f(x) + \frac{\epsilon}{2n} \cdot (2n) = \Delta f(x) + \epsilon. \]
+			Comme $\Delta f \ge 0$, on a $\Delta g(x) \ge \epsilon > 0$. D'après la question 2, le maximum de $g$ sur $\overline{\Omega}$ est atteint sur $\partial \Omega$ :
+			\[ \forall x \in \overline{\Omega}, \quad f(x) \le g(x) \le \max_{\partial \Omega} g = \max_{y \in \partial \Omega} \left( f(y) + \frac{\epsilon}{2n}|y|^2 \right) \]
+			Soit $R = \max_{y \in \partial \Omega} |y|$. On a $f(x) \le \max_{\partial \Omega} f + \frac{\epsilon R^2}{2n}$. En faisant tendre $\epsilon$ vers $0$, on obtient $f(x) \le \max_{\partial \Omega} f$ pour tout $x$, d'où l'égalité des maximums.
+			
+			\item \begin{itemize}
+				\item Comme $\Delta f \ge 0$, le principe du maximum (Q3) donne : $\forall x \in \Omega, f(x) \le \max_{\partial \Omega} f = 0$.
+				\item En considérant $-f$, on a $\Delta(-f) = -\Delta f = 0 \ge 0$. Le principe du maximum appliqué à $-f$ donne : $\forall x \in \Omega, -f(x) \le \max_{\partial \Omega} (-f) = 0$, soit $f(x) \ge 0$.
+			\end{itemize}
+			Ainsi, pour tout $x \in \Omega$, $0 \le f(x) \le 0$, donc $f$ est identiquement nulle.
+		\end{enumerate}
+	\end{proof}
+	
+	\section{Équations différentielles}
 	\setcounter{exercise}{0}
 	\begin{exercise}
 		Résoudre les équations différentielles suivantes :
