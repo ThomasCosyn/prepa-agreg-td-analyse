@@ -39,7 +39,7 @@
 	
 	\setcounter{exercise}{2}
 	\begin{exercise}
-		Soit $(u_n)$ une suite réelle telle que $u_{n+1} - u_n \rightarrow 0$.
+		Soit $(u_n)$ une suite réelle telle que $u_{n+1} − u_n \rightarrow 0$.
 		A-t-on que la suite $(u_n)$ converge ? Et si l’on suppose
 		que la suite $(u_n)$ est bornée ?
 	\end{exercise}
@@ -47,9 +47,8 @@
 	\begin{proof}
 		\begin{itemize}
 			\item La suite définie pour $n\geq 1$ par $u_n=ln(n)$ respecte le critère mais ne converge pas.
-			\item Les suites typiques qui sont bornées mais ne convergent pas sont celles qui oscillent. On cherche donc une suite qui oscille mais en faisant des "sauts de plus en plus petits". Considérons pour $n\geq 1$, $u_n=\sin(\sqrt{n})$. L'inégalité des accroissements finis donne
-			\[|u_{n+1}-u_n| = |f(n+1)-f(n)|\leq \sup_{x\in[n,n+1]}|f'(x)|\]
-			Ici on a $f:x\mapsto \sin(\sqrt{x})$ qui est $\mathcal{C}^{1}$ sur $\mathbb{R}_+^*$, de dérivée $f':x\mapsto \frac{1}{2\sqrt{x}}\cos(\sqrt{x})$. Le $\cos$ est borné donc $f'(x)\rightarrow 0$ en $+\infty$. Ainsi, $(u_n)$ vérifie bien le critère mais ne converge pas.
+			\item Les suites typiques qui sont bornées mais ne convergent pas sont celles qui oscillent. On cherche donc une suite qui oscille mais en faisant des "sauts de plus en plus petits". Considérons pour $n\geq 1$, $u_n=sin(\sqrt{n})$. L'inégalité des accroissements finis donne
+			\[|u_{n+1}-u_n| = |f()\]
 		\end{itemize}
 	\end{proof}
 	
@@ -122,31 +121,7 @@
 	
 	\section{Fonctions d'une variable réelle}
 	
-	\setcounter{exercise}{22}
-	\begin{exercise}
-		Soit $f$ une fonction strictement convexe sur $\mathbb{R}$ qui atteint son minimum. Montrer que $f$ tend vers $+\infty$ en $\pm\infty$.
-	\end{exercise}
-	
-	\begin{proof}
-		Notons $x_0$ le point où $f$ atteint son minimum global sur $\mathbb{R}$. Par définition, pour tout $x \in \mathbb{R}$, $f(x) \ge f(x_0)$.
-		
-		Utilisons la propriété de croissance des pentes pour une fonction convexe. Pour tout $x \neq x_0$, on considère le taux d'accroissement :
-		\[ \tau(x) = \frac{f(x) - f(x_0)}{x - x_0} \]
-
-		Soit $a$ un réel tel que $a > x_0$. Comme $f$ est strictement convexe, la fonction $\tau$ est strictement croissante sur $\mathbb{R} \setminus \{x_0\}$. Ainsi, pour tout $x > a$ :
-		\[ \frac{f(x) - f(x_0)}{x - x_0} > \frac{f(a) - f(x_0)}{a - x_0} \]
-		
-		Puisque $x_0$ est le point de minimum et que $f$ est strictement convexe, on a $f(a) > f(x_0)$. Posons $\alpha = \frac{f(a) - f(x_0)}{a - x_0} > 0$.
-		On en déduit que pour tout $x > a$ :
-		\[ f(x) > f(x_0) + \alpha(x - x_0) \]
-		Par comparaison, comme $\alpha > 0$, le membre de droite tend vers $+\infty$ quand $x \to +\infty$, donc :
-		\[ \lim_{x \to +\infty} f(x) = +\infty \]
-		
-		Un raisonnement similaire donne le résultat en $-\infty$
-
-	\end{proof}
-	
-	
+	\setcounter{exercise}{23}
 	\begin{exercise}
 		Soit $f$ une fonction réelle définie sur un intervalle ouvert $I$. On suppose que pour tout $x \in I$ on a
 		\[
@@ -212,33 +187,7 @@
 		
 	\end{proof}
 	
-	\begin{exercise}
-		On se donne une fonction $f(z) = \sum_{n=0}^{+\infty} a_n z^n$ holomorphe sur le disque unité. Pour $r \in [0, 1]$, on pose $M(r) = \max_{|z|\le r} |f(z)|$ et $S(r) = \sum_{n=0}^{+\infty} |a_n| r^n$. Montrer que $M(r) \le S(r)$, puis montrer que $S(r)$ est une fonction convexe de $\log(r)$, c'est-à-dire que la fonction $s \mapsto S(e^s)$ est convexe.
-	\end{exercise}
-	
-	\begin{proof}
-		Procédons par étapes pour résoudre cet exercice.
-		
-		\begin{itemize}
-			\item Soit $z$ un nombre complexe tel que $|z| \le r$. Par application de l'inégalité triangulaire à la somme de la série (qui converge absolument à l'intérieur du disque), nous avons :
-			\[ |f(z)| = \left| \sum_{n=0}^{+\infty} a_n z^n \right| \le \sum_{n=0}^{+\infty} |a_n z^n| = \sum_{n=0}^{+\infty} |a_n| \cdot |z|^n \]
-			Comme $r \ge 0$ et $|z| \le r$, on a pour tout $n \in \mathbb{N}$, $|z|^n \le r^n$. D'où :
-			\[ |f(z)| \le \sum_{n=0}^{+\infty} |a_n| r^n = S(r) \]
-			Cette majoration étant valable pour n'importe quel $z$ dans le disque fermé de rayon $r$, on en déduit en passant au maximum :
-			\[ M(r) = \max_{|z| \le r} |f(z)| \le S(r) \]
-			\item Posons $g(s) = S(e^s)$. En remplaçant $r$ par $e^s$ dans l'expression de $S(r)$, on obtient :
-			\[ g(s) = \sum_{n=0}^{+\infty} |a_n| (e^s)^n = \sum_{n=0}^{+\infty} |a_n| e^{ns} \]
-			La convexité de $g$ découle des propriétés suivantes :
-			\begin{itemize}
-				\item Pour chaque $n \in \mathbb{N}$, la fonction $u_n : s \mapsto |a_n| e^{ns}$ est convexe sur $\mathbb{R}$. En effet, si $|a_n| > 0$, sa dérivée seconde $u_n''(s) = n^2 |a_n| e^{ns}$ est strictement positive (ou nulle si $n=0$).
-				\item La fonction $g$ est une somme de fonctions convexes. Comme la série converge sur l'intervalle considéré (pour $s \le 0$, ce qui correspond à $r \le 1$), la somme d'une série de fonctions convexes est elle-même une fonction convexe.
-			\end{itemize}
-			Ainsi, $s \mapsto S(e^s)$ est convexe, ce qui montre bien que $S(r)$ est une fonction convexe de $\log(r)$.
-		\end{itemize}
-		
-		
-	\end{proof}
-	
+	\setcounter{exercise}{12}
 	\begin{exercise}
 		\begin{enumerate}
 			\item Soient $R > \epsilon > 0$ et $\gamma$ un lacet qui paramètre le bord de l'ouvert $\Omega = \{z \in \mathbb{C} \mid \epsilon < |z| < R \text{ et } \text{Im}(z) > 0\}$ dans le sens trigonométrique. Montrer que l'intégrale $\int_\gamma \frac{e^{iz}}{z} dz$ est nulle.
